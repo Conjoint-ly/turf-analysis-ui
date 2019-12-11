@@ -1,0 +1,17 @@
+{
+  "name": "turf-analysis-ui",
+  "version": "1.0.0",
+  "description": "TURN Analysis UI",
+  "repository": "git@github.com:log1st/turf-analysis-ui.git",
+  "author": {
+    "name": "Sergey Perenets",
+    "email": "log1st.ps@gmail.com",
+    "url": "https://github.com/log1st"
+  },
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "turf-analysis-core": "1.0.0"
+  }
+}
