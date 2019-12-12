@@ -1,7 +1,7 @@
 {
   "name": "turf-analysis-ui",
   "version": "1.0.0",
-  "description": "TURN Analysis UI",
+  "description": "TURF Analysis UI",
   "repository": "git@github.com:log1st/turf-analysis-ui.git",
   "author": {
     "name": "Sergey Perenets",
