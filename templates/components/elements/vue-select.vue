@@ -34,7 +34,8 @@
                 })
         },
         watch: {
-            value() {
+            async value() {
+                await this.$nextTick;
                 $(this.$el).trigger('change');
             }
         },
