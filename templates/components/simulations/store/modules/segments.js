@@ -1,12 +1,12 @@
-import {SET} from "@/components/simulations/store/mutation-types";
+import { SET } from '@conjointly/turf-analysis-ui/templates/components/simulations/store/mutation-types';
 
 export default {
-    state:{
-        segments:[]
+  state: {
+    segments: [],
+  },
+  mutations: {
+    [SET]: (state, { segments }) => {
+      state.segments = segments;
     },
-    mutations:{
-        [SET]: (state, {segments}) => {
-            state.segments = segments;
-        }
-    }
-}
+  },
+};

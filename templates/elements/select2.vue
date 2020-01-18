@@ -1,43 +1,43 @@
 <template>
-    <select>
-        <slot></slot>
-    </select>
+  <select>
+    <slot />
+  </select>
 </template>
 
 <script>
 import $ from 'jquery';
 
 export default {
-    props: ['options', 'value'],
-    mounted() {
-        var vm = this;
-        $(this.$el)
-            .select2({
-                escapeMarkup: function(markup) {
-                    return markup;
-                },
-                templateResult: function(data) {
-                    return data.html;
-                },
-                templateSelection: function(data) {
-                    return data.text;
-                }
-            })
-            .val(this.value)
-            .trigger('change')
-            .on('change', function () {
-                vm.$emit('input', this.value)
-            });
+  props: ['options', 'value'],
+  watch: {
+    value(value) {
+      $(this.$el)
+        .val(value);
     },
-    watch: {
-        value(value) {
-            $(this.$el)
-                .val(value);
+    options() {},
+  },
+  mounted() {
+    const vm = this;
+    $(this.$el)
+      .select2({
+        escapeMarkup(markup) {
+          return markup;
         },
-        options() {}
-    },
-    destroyed() {
-        $(this.$el).off().select2('destroy');
-    }
+        templateResult(data) {
+          return data.html;
+        },
+        templateSelection(data) {
+          return data.text;
+        },
+      })
+      .val(this.value)
+      .trigger('change')
+      .on('change', function () {
+        vm.$emit('input', this.value);
+      });
+  },
+  destroyed() {
+    $(this.$el).off().select2('destroy');
+  },
 };
 </script>

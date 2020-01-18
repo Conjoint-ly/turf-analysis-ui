@@ -1,25 +1,26 @@
 <template>
-    <label class="bootstrapswitch-inner">
-        <input type="checkbox"
-               :name="name"
-               :value="value"
-               @change.prevent="$emit('input', $event.target.checked ? 1 : 0)"
-               :checked="value === 1"
-               :disabled="disabled"
-        />
-        <span></span>
-    </label>
+  <label class="bootstrapswitch-inner">
+    <input
+      type="checkbox"
+      :name="name"
+      :value="value"
+      :checked="value === 1"
+      :disabled="disabled"
+      @change.prevent="$emit('input', $event.target.checked ? 1 : 0)"
+    >
+    <span />
+  </label>
 </template>
 
 <script>
-    export default {
-        'name': 'checkbox',
-        props: {
-            name: {type: String, required: true},
-            value: {type: Number, required: true},
-            disabled: {type: Boolean, default: false}
-        },
-    }
+export default {
+  name: 'Checkbox',
+  props: {
+    name: { type: String, required: true },
+    value: { type: Number, required: true },
+    disabled: { type: Boolean, default: false },
+  },
+};
 </script>
 
 <style scoped>

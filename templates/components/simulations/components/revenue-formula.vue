@@ -1,24 +1,24 @@
 <template>
-    <validation-wrapper :validation="validation" field="formula">
-        <input :value="formula" @input="input" class="form-control"/>
-    </validation-wrapper>
+  <validation-wrapper :validation="validation" field="formula">
+    <input :value="formula" class="form-control" @input="input">
+  </validation-wrapper>
 </template>
 
 <script>
-    import ValidationWrapper from "@/elements/validation/wrapper";
-    import validators from "@/components/simulations/validators/formula";
+import ValidationWrapper from '@conjointly/turf-analysis-ui/templates/elements/validation/wrapper';
+import validators from '@conjointly/turf-analysis-ui/templates/components/simulations/validators/formula';
 
-    export default {
-        name: "revenue-formula",
-        props: ["formula"],
-        components: {ValidationWrapper},
-        methods: {
-            input(formula) {
-                this.$emit("input", formula);
-            }
-        },
-        validators
-    };
+export default {
+  name: 'RevenueFormula',
+  components: { ValidationWrapper },
+  props: ['formula'],
+  methods: {
+    input(formula) {
+      this.$emit('input', formula);
+    },
+  },
+  validators,
+};
 </script>
 
 <style scoped></style>

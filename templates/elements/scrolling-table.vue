@@ -1,96 +1,110 @@
 <template>
-    <table ref="table"
-           class="scrolling"
-           :class="{ scrolly: scrollVertical, scrollx: scrollHorizontal, 'freeze-first-column': freezeFirstColumn }"
-           :style="tableStyle"
+  <table
+    ref="table"
+    class="scrolling"
+    :class="{ scrolly: scrollVertical, scrollx: scrollHorizontal, 'freeze-first-column': freezeFirstColumn }"
+    :style="tableStyle"
+  >
+    <thead
+      ref="thead"
+      name="thead"
+      :class="{ scrollsync: syncHeaderScroll }"
+      :style="syncHeaderScroll && scrollVertical ? stubScrollbarStyle : ''"
+      @dragenter="onDragEnterHeader"
+      @dragover.prevent="onDragOverHeader"
+      @drop="onDropHeader"
     >
-        <thead name="thead" ref="thead"
-               :class="{ scrollsync: syncHeaderScroll }"
-               :style="syncHeaderScroll && scrollVertical ? stubScrollbarStyle : ''"
-               @dragenter="onDragEnterHeader"
-               @dragover.prevent="onDragOverHeader"
-               @drop="onDropHeader"
-        ><slot name="thead"/></thead>
-        <tbody name="tbody" ref="tbody"
-               @scroll.passive="updateSyncedScroll"><slot name="tbody"/></tbody>
-        <tfoot name="tfoot" ref="tfoot"
-               v-if="includeFooter"
-               :class="{ scrollsync: syncFooterScroll }"
-               :style="syncFooterScroll && scrollVertical ? stubScrollbarStyle : ''"
-        ><slot name="tfoot"/></tfoot>
-    </table>
+      <slot name="thead" />
+    </thead>
+    <tbody
+      ref="tbody"
+      name="tbody"
+      @scroll.passive="updateSyncedScroll"
+    >
+      <slot name="tbody" />
+    </tbody>
+    <tfoot
+      v-if="includeFooter"
+      ref="tfoot"
+      name="tfoot"
+      :class="{ scrollsync: syncFooterScroll }"
+      :style="syncFooterScroll && scrollVertical ? stubScrollbarStyle : ''"
+    >
+      <slot name="tfoot" />
+    </tfoot>
+  </table>
 </template>
 <script>
-    export default {
-        name: "VueScrollingTable",
-        props: {
-            deadAreaColor: { type: String, required: false, default: "#fff" },
-            includeFooter: { type: Boolean, required: false, default: false },
-            syncHeaderScroll: { type: Boolean, required: false, default: true },
-            syncFooterScroll: { type: Boolean, required: false, default: true },
-            scrollHorizontal: { type: Boolean, required: false, default: true },
-            scrollVertical: { type: Boolean, required: false, default: true },
-            freezeFirstColumn: { type: Boolean, required: false, default: false },
-        },
-        computed: {
-            tableStyle() {
-                return `background-color: ${this.deadAreaColor};`
-            },
-            stubScrollbarStyle() {
-                return `background-color: ${this.deadAreaColor};
+export default {
+  name: 'VueScrollingTable',
+  props: {
+    deadAreaColor: { type: String, required: false, default: '#fff' },
+    includeFooter: { type: Boolean, required: false, default: false },
+    syncHeaderScroll: { type: Boolean, required: false, default: true },
+    syncFooterScroll: { type: Boolean, required: false, default: true },
+    scrollHorizontal: { type: Boolean, required: false, default: true },
+    scrollVertical: { type: Boolean, required: false, default: true },
+    freezeFirstColumn: { type: Boolean, required: false, default: false },
+  },
+  computed: {
+    tableStyle() {
+      return `background-color: ${this.deadAreaColor};`;
+    },
+    stubScrollbarStyle() {
+      return `background-color: ${this.deadAreaColor};
 				scrollbar-base-color: ${this.deadAreaColor};
 				scrollbar-face-color: ${this.deadAreaColor};
 				scrollbar-highlight-color: ${this.deadAreaColor};
 				scrollbar-track-color: ${this.deadAreaColor};
 				scrollbar-arrow-color: ${this.deadAreaColor};
 				scrollbar-shadow-color: ${this.deadAreaColor};
-				scrollbar-darkshadow-color: ${this.deadAreaColor};`
-            },
-        },
-        watch: {
-            deadAreaColor() {
-                this.setColors()
-            },
-        },
-        mounted: function() {
-            this.setColors()
-            this.updateSyncedScroll()
-        },
-        methods: {
-            updateSyncedScroll() {
-                const b = this.$refs.tbody
-                const l = b.scrollLeft
-                if (this.scrollHorizontal) {
-                    if (this.syncHeaderScroll) {
-                        const h = this.$refs.thead
-                        if (h.scrollLeft !== l) {
-                            h.scrollLeft = l
-                        }
-                    }
-                    if (this.includeFooter && this.syncFooterScroll) {
-                        const f = this.$refs.tfoot
-                        if (f.scrollLeft !== l) {
-                            f.scrollLeft = l
-                        }
-                    }
-                }
-                this.$emit("scroll", b.scrollTop, l, b.scrollHeight, b.scrollWidth)
-            },
-            setColors() {
-                const s = this.$refs.table.style
-                s.setProperty("--dead-area-color", this.deadAreaColor)
-            },
-            onDragEnterHeader(e) {
-                this.$emit("header-dragenter", e)
-            },
-            onDragOverHeader(e) {
-                this.$emit("header-dragover", e)
-            },
-            onDropHeader(e) {
-                this.$emit("header-drop", e)
-            },
-        },
-    }
+				scrollbar-darkshadow-color: ${this.deadAreaColor};`;
+    },
+  },
+  watch: {
+    deadAreaColor() {
+      this.setColors();
+    },
+  },
+  mounted() {
+    this.setColors();
+    this.updateSyncedScroll();
+  },
+  methods: {
+    updateSyncedScroll() {
+      const b = this.$refs.tbody;
+      const l = b.scrollLeft;
+      if (this.scrollHorizontal) {
+        if (this.syncHeaderScroll) {
+          const h = this.$refs.thead;
+          if (h.scrollLeft !== l) {
+            h.scrollLeft = l;
+          }
+        }
+        if (this.includeFooter && this.syncFooterScroll) {
+          const f = this.$refs.tfoot;
+          if (f.scrollLeft !== l) {
+            f.scrollLeft = l;
+          }
+        }
+      }
+      this.$emit('scroll', b.scrollTop, l, b.scrollHeight, b.scrollWidth);
+    },
+    setColors() {
+      const s = this.$refs.table.style;
+      s.setProperty('--dead-area-color', this.deadAreaColor);
+    },
+    onDragEnterHeader(e) {
+      this.$emit('header-dragenter', e);
+    },
+    onDragOverHeader(e) {
+      this.$emit('header-dragover', e);
+    },
+    onDropHeader(e) {
+      this.$emit('header-drop', e);
+    },
+  },
+};
 </script>
 <style>
     table.scrolling {
